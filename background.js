@@ -11,10 +11,10 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
             }
 
             try {
-                // 1. Check if the calendar already exists
+                //Check calendar exists
                 let targetCalendarId = await findCalendarByName(token, TARGET_CALENDAR_NAME);
 
-                // 2. If it doesn't exist, create it
+                //Create if not exists
                 if (!targetCalendarId) {
                     console.log("Calendar not found. Creating...");
                     targetCalendarId = await createNewCalendar(token, TARGET_CALENDAR_NAME);
@@ -22,9 +22,9 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
                 console.log(`Using Calendar ID: ${targetCalendarId}`);
 
-                // 3. Add the assessments to this specific calendar
+                //add the assessments to calendar
                 const letterCounters = {};
-                for (const task of data) {
+                const uploadPromises = data.map(task => {
                     const dateObj = new Date(task.date);
                     const isoDate = dateObj.toISOString().split("T")[0];
 
@@ -43,16 +43,19 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
                         }
                     };
 
-                    await fetch(`https://www.googleapis.com/calendar/v3/calendars/${targetCalendarId}/events`, {
+                    return fetch(`https://www.googleapis.com/calendar/v3/calendars/${targetCalendarId}/events`, {
                         method: 'POST',
                         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
                         body: JSON.stringify(event)
                     });
-                }
+                });
+                await Promise.all(uploadPromises);
+                sendResponse({success:true})
                 console.log(`Successfully added assessments to ${TARGET_CALENDAR_NAME}!`);
 
             } catch (err) {
                 console.error("Workflow Error:", err);
+                sendResponse({success:false,error:err.message})
                 console.log("Failed to process calendar request. Check console for details.");
             }
         });

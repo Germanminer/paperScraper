@@ -1,52 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <style>
-    body {
-      width: 250px;
-      font-family: Arial;
-      padding: 10px;
-    }
-    button {
-      width: 100%;
-      padding: 8px;
-      margin-top: 10px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h3>Exam Importer</h3>
-<button id="scan">Get assessments</button>
-<button id="name">Get Name</button>
-<button id="add">Add to Calendar</button>
 
-<hr>
-<div id="settings-area">
+<div class="card">
+  <h3>Exam Importer</h3>
+  <button id="add">
+    <span>Find & Add Assessments</span>
+  </button>
+  <p class="disclaimer">
+    Please review the imported assessments and confirm that all important details have been added to your calendar.
+  </p>
+
+  <div id="selection-wrapper" class="hidden">
+    <hr>
+    <p style="font-size: 12px; margin-bottom: 8px;">Select a table to import:</p>
+    <div id="results-container"></div>
+  </div>
+</div>
+
+<div class="card">
   <h4>Settings</h4>
-  <div style="margin-bottom: 10px;">
-    <label for="namingConvention" style="font-size: 12px;">Event Title Format:</label>
-    <select id="namingConvention" style="width: 100%;">
+  <div style="margin-bottom: 16px;">
+    <label for="namingConvention">TITLE FORMAT</label>
+    <select id="namingConvention">
       <option value="full">Class Name + Assessment</option>
-      <option value="index">Class Name + Index (e.g., A1, A2)</option>
+      <option value="index">Class Name + Index (A1, A2)</option>
     </select>
   </div>
 
-  <div style="margin-bottom: 10px;">
-    <label style="font-size: 12px;">
-      <input type="checkbox" id="showPercentage"> Include % in details
-    </label>
-  </div>
-  <div class="option" style="margin-top: 15px;">
-    <label style="font-size: 12px; font-weight: bold;">Reminders:</label>
-    <div id="reminder-options" style="font-size: 11px; display: flex; flex-direction: column; gap: 4px; margin-top: 5px;">
-      <label><input type="checkbox" class="reminder-check" value="20160"> 2 Weeks before</label>
-      <label><input type="checkbox" class="reminder-check" value="10080"> 1 Week before</label>
-      <label><input type="checkbox" class="reminder-check" value="2880"> 2 Days before</label>
-      <label><input type="checkbox" class="reminder-check" value="1440"> Day before</label>
-      <label><input type="checkbox" class="reminder-check" value="0"> Day of</label>
-    </div>
+  <label class="checkbox-group">
+    <input type="checkbox" id="showPercentage">
+    <span>Include grade percentage in details</span>
+  </label>
+
+  <label style="font-size: 11px; letter-spacing: 0.05em;">REMINDERS</label>
+  <div id="reminder-options" class="reminder-grid">
+    <label class="reminder-label"><input type="checkbox" class="reminder-check" value="20160"> 2 Weeks</label>
+    <label class="reminder-label"><input type="checkbox" class="reminder-check" value="10080"> 1 Week</label>
+    <label class="reminder-label"><input type="checkbox" class="reminder-check" value="2880"> 2 Days</label>
+    <label class="reminder-label"><input type="checkbox" class="reminder-check" value="1440"> 1 Day</label>
   </div>
 </div>
+
 <script src="popup.js"></script>
 </body>
 </html>
