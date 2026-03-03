@@ -1,59 +1,83 @@
-chrome.runtime.onMessage.addListener(async (msg, sender) => {
-    if (msg.action === "dataScanned") {
-        console.log("DATA SCANNED")
-        console.log(msg.data)
-    } else if (msg.action === "executeCalendarAdd") {
+const TARGET_CALENDAR_NAME = "assessments-PaperScraper";
+
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    if (msg.action === "executeCalendarAdd") {
         const { data, name, settings } = msg;
 
-        // Initialize counters for each letter
-        const letterCounters = {};
-
-        const calendarEvents = data.map((task) => {
-            let title = "";
-            const rawDate = new Date(task.date);
-            const isoDate = rawDate.toISOString();
-            if (settings.namingStyle === "index") {
-                // Get the first letter (e.g., 'A' from 'Assignment')
-                const firstLetter = task.name[0].toUpperCase();
-
-                // Increment counter for this specific letter
-                letterCounters[firstLetter] = (letterCounters[firstLetter] || 0) + 1;
-
-                // Result: "COMP101 - A1"
-                title = `${name} - ${firstLetter}${letterCounters[firstLetter]}`;
-            } else {
-                title = `${name} - ${task.name}`;
-            }
-
-            return {
-                summary: title,
-                description: settings.includePercentage ? `Weight: ${task.percentage}` : "",
-                start: { dateTime: isoDate },
-                end: { dateTime: isoDate },
-                reminders:{
-                    useDefault:false,
-                    overrides : settings.reminders.map(mins=>({
-                        method:"popup",
-                        minutes:mins
-                    }))
-                }
-            };
-        });
-
-        console.log("Ready to add with settings:", settings, calendarEvents);
-    }else if (msg.action === "testAuth") {
-        console.log("Attempting to get Auth Token...");
-
-        // interactive: true will force the Google Login popup if not logged in
-        chrome.identity.getAuthToken({ interactive: true }, function(token) {
+        chrome.identity.getAuthToken({ interactive: true }, async function(token) {
             if (chrome.runtime.lastError) {
                 console.error("Auth Error:", chrome.runtime.lastError.message);
-                sendResponse({ success: false, error: chrome.runtime.lastError.message });
-            } else {
-                console.log("Success! Token received:", token);
-                sendResponse({ success: true, token: token });
+                return;
+            }
+
+            try {
+                // 1. Check if the calendar already exists
+                let targetCalendarId = await findCalendarByName(token, TARGET_CALENDAR_NAME);
+
+                // 2. If it doesn't exist, create it
+                if (!targetCalendarId) {
+                    console.log("Calendar not found. Creating...");
+                    targetCalendarId = await createNewCalendar(token, TARGET_CALENDAR_NAME);
+                }
+
+                console.log(`Using Calendar ID: ${targetCalendarId}`);
+
+                // 3. Add the assessments to this specific calendar
+                const letterCounters = {};
+                for (const task of data) {
+                    const dateObj = new Date(task.date);
+                    const isoDate = dateObj.toISOString().split("T")[0];
+
+                    let title = settings.namingStyle === "index"
+                        ? `${name} - ${task.name[0].toUpperCase()}${ (letterCounters[task.name[0].toUpperCase()] = (letterCounters[task.name[0].toUpperCase()] || 0) + 1) }`
+                        : `${name} - ${task.name}`;
+
+                    const event = {
+                        summary: title,
+                        description: settings.includePercentage ? `Percentage: ${task.percentage}` : "",
+                        start: { date: isoDate, timeZone: 'Pacific/Auckland' },
+                        end: { date: isoDate, timeZone: 'Pacific/Auckland' },
+                        reminders: {
+                            useDefault: false,
+                            overrides: (settings.reminders || []).map(mins => ({ method: "popup", minutes: mins }))
+                        }
+                    };
+
+                    await fetch(`https://www.googleapis.com/calendar/v3/calendars/${targetCalendarId}/events`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                        body: JSON.stringify(event)
+                    });
+                }
+                console.log(`Successfully added assessments to ${TARGET_CALENDAR_NAME}!`);
+
+            } catch (err) {
+                console.error("Workflow Error:", err);
+                console.log("Failed to process calendar request. Check console for details.");
             }
         });
-        return true; // Keep channel open for async response
+        return true;
     }
 });
+
+/** Helper: Find a calendar ID by its summary name **/
+async function findCalendarByName(token, name) {
+    const response = await fetch('https://www.googleapis.com/calendar/v3/users/me/calendarList', {
+        headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const list = await response.json();
+    console.log(list);
+    const found = list.items.find(cal => cal.summary === name);
+    return found ? found.id : null;
+}
+
+/** Helper: Create a new secondary calendar **/
+async function createNewCalendar(token, name) {
+    const response = await fetch('https://www.googleapis.com/calendar/v3/calendars', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ summary: name })
+    });
+    const newCal = await response.json();
+    return newCal.id;
+}

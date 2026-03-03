@@ -1,4 +1,3 @@
-//# TODO, Add option to choose between two papers when there are two papers
 
 chrome.runtime.onMessage.addListener((message,sender,sendResponse) => {
     if (message.action === "scanAssessments") {

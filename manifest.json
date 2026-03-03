@@ -10,7 +10,7 @@
   ],
   "oauth2": {
     "client_id": "284115528074-35d8q9cqqufmgth4sss8l9u43rtrlo2q.apps.googleusercontent.com",
-    "scopes": ["https://www.googleapis.com/auth/calendar.events"]
+    "scopes": ["https://www.googleapis.com/auth/calendar"]
   },
   "host_permissions": [
     "https://www.googleapis.com/*",
