@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "Uni Exam to Calendar",
+  "version": "1.0",
+  "permissions": [
+    "identity",
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+  "oauth2": {
+    "client_id": "284115528074-35d8q9cqqufmgth4sss8l9u43rtrlo2q.apps.googleusercontent.com",
+    "scopes": ["https://www.googleapis.com/auth/calendar.events"]
+  },
+  "host_permissions": [
+    "https://www.googleapis.com/*",
+    "https://paperoutlines.waikato.ac.nz/*",
+    "https://elearn.waikato.ac.nz/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://elearn.waikato.ac.nz/*",
+        "https://paperoutlines.waikato.ac.nz/*"
+      ],
+      "js": ["content.js"],
+      "all_frames": true
+    }
+  ]
+}
