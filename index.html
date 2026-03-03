@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Uni Exam to Calendar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-body);
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            border: 1px solid var(--border);
+        }
+
+        header {
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .last-updated {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        section {
+            margin-bottom: 2.5rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.5rem 0;
+            color: var(--text-dark);
+        }
+
+        p, li {
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-box {
+            background-color: #f1f5f9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .contact-box p {
+            margin-bottom: 0;
+            font-weight: 600;
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.5rem;
+            }
+            h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Privacy Policy</h1>
+        <p class="last-updated">Last updated: March 3, 2026</p>
+    </header>
+
+    <section id="introduction">
+        <h2>1. Introduction</h2>
+        <p>This Privacy Policy explains how <strong>Uni Exam to Calendar</strong> handles information.</p>
+        <p>The Extension is designed to read specific content from a university webpage and optionally create events in a user’s Google Calendar. Your privacy matters, and the Extension is built to collect as little information as possible.</p>
+    </section>
+
+    <section id="collection">
+        <h2>2. Information We Collect</h2>
+
+        <h3>a) Information Processed Locally</h3>
+        <p>The Extension may access and process:</p>
+        <ul>
+            <li>Assessment names</li>
+            <li>Dates and Times</li>
+            <li>Related scheduling information visible on the university webpage</li>
+        </ul>
+        <p>This data is processed <strong>locally in your browser</strong> and is not stored on external servers controlled by us.</p>
+
+        <h3>b) Google Account Information</h3>
+        <p>If you choose to connect your Google account, the Extension may request permission to view and create events in your Google Calendar.</p>
+        <p>The Extension only uses the minimum scope necessary to create calendar events. <strong>We do not:</strong></p>
+        <ul>
+            <li>Access your emails or files</li>
+            <li>Access unrelated Google services</li>
+        </ul>
+    </section>
+
+    <section id="usage">
+        <h2>3. How We Use Information</h2>
+        <p>Information is used solely to extract assessment schedule details and create calendar events (if authorized). We <strong>do not sell, rent, share, or distribute</strong> your data to third parties.</p>
+    </section>
+
+    <section id="storage">
+        <h2>4. Data Storage</h2>
+        <p>Extracted schedule information is processed locally. No personal data is stored on external servers operated by us. Any Google authorization tokens are stored securely using Chrome’s built-in extension storage.</p>
+    </section>
+
+    <section id="third-party">
+        <h2>5. Third-Party Services</h2>
+        <p>The Extension integrates with the <strong>Google Calendar API</strong>. Use of Google services is subject to <a href="https://policies.google.com/privacy" target="_blank">Google’s Privacy Policy and Terms of Service</a>.</p>
+    </section>
+
+    <section id="permissions">
+        <h2>6. Permissions</h2>
+        <p>The Extension may request the following Chrome permissions:</p>
+        <ul>
+            <li><strong>Access to specific university webpages:</strong> To read assessment data.</li>
+            <li><strong>Access to Google Calendar:</strong> To enable calendar integration.</li>
+            <li><strong>Storage:</strong> To save user preferences and settings locally.</li>
+        </ul>
+    </section>
+
+    <section id="security">
+        <h2>7. Data Security</h2>
+        <p>We take reasonable measures to protect information handled by the Extension. However, no system can be guaranteed 100% secure.</p>
+    </section>
+
+    <section id="children">
+        <h2>8. Children’s Privacy</h2>
+        <p>The Extension is not intended for children under the age of 13 and does not knowingly collect personal information from children.</p>
+    </section>
+
+    <section id="changes">
+        <h2>9. Changes to This Policy</h2>
+        <p>This Privacy Policy may be updated from time to time. Updates will be reflected by revising the “Last updated” date at the top of this document.</p>
+    </section>
+
+    <section id="contact">
+        <h2>10. Contact</h2>
+        <p>If you have questions about this Privacy Policy, you can contact:</p>
+        <div class="contact-box">
+            <p>Pascal Burri</p>
+            <a href="mailto:pascalburri07@gmail.com">pascalburri07@gmail.com</a>
+        </div>
+    </section>
+</div>
+
+<footer>
+    &copy; 2026 Uni Exam to Calendar. All rights reserved.
+</footer>
+
+</body>
+</html>
